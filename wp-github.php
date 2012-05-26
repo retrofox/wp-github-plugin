@@ -26,6 +26,12 @@ Licence: A "Slug" license name e.g. GPL2
 */
 
 /**
+ * Translation support
+ */
+
+load_plugin_textdomain('widget_wp_github', false, basename( dirname( __FILE__ ) ) . '/languages' );
+
+/**
  * Github constants
  */
 
@@ -71,11 +77,17 @@ class WP_GitHub extends WP_Widget {
 
     $data = getGithubData($instance['user'], $instance['repo']);
     ?>
+
+
     <div class='widget-container wp-github wp-github-contributors'>
       <h2 class="user">
-      <a target="_blank" href="https://github.com/<?php echo $instance['user'] ?>/<?php echo $instance['repo']; ?>" class="wp-github-title">
-          <?php echo $instance['title']; ?></h2>
+        <a target="_blank" href="https://github.com/<?php echo $instance['user'] ?>/<?php echo $instance['repo']; ?>" class="wp-github-title">
+          <?php echo $instance['title']; ?>
         </a>
+      </h2>
+      <?php if ($data['message']) : ?>
+      <p class="message"><?php echo $data['message']; ?></p>
+      <?php else : ?>
       <ul>
         <?php for ($i = 0; $i < count($data); $i++) : ?>
         <li>
@@ -86,6 +98,7 @@ class WP_GitHub extends WP_Widget {
         </li>
         <?php endfor; ?> 
       </ul>
+      <?php endif; ?>
     </div>
     <?php
     echo $after_widget;
