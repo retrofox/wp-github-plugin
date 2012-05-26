@@ -1,6 +1,6 @@
 === WP GithGub Plugin ===
 Contributors: retrofox 
-Donate link: http://www.retrofox.com.ar/wp-github-plugin
+Donate link: http://www.nodejs.esr/wp-github-plugin
 Tags: github
 Requires at least: 2.0.2
 Tested up to: 0.0.1

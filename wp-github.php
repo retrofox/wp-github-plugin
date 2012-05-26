@@ -1,11 +1,11 @@
 <?php
 /*
-Plugin Name: WP-GitHub
-Plugin URI: http://www.retrofox.com.ar/wp-github-plugin
+Plugin Name: WP GitHub
+Plugin URI: http://www.nodejs.es/wp-github-plugin
 Description: Allow retrieve data from github through API 
 Author: Damian Suarez
 Version: 0.0.1
-Author URI: http://www.coladeleon.com.ar
+Author URI: http://www.retrofox.com.ar
 Licence: A "Slug" license name e.g. GPL2
 */
 
@@ -26,12 +26,18 @@ Licence: A "Slug" license name e.g. GPL2
 */
 
 /**
+ * Github constants
+ */
+
+define('gh_api_host', 'https://api.github.com/');
+
+/**
  * getGuthubData
  * retrieve data through github API
  */
 
 function getGithubData ($user, $repo) {
-  $url = "https://api.github.com/repos/".$user."/".$repo."/contributors";
+  $url = gh_api_host."repos/".$user."/".$repo."/contributors";
 
   $ch = curl_init($url);
 
@@ -64,9 +70,8 @@ class WP_GitHub extends WP_Widget {
     extract($instance);
 
     $data = getGithubData($instance['user'], $instance['repo']);
-
     ?>
-    <div class='wp-github wp-github-contributors'>
+    <div class='widget-container wp-github wp-github-contributors'>
       <h2 class="user">
       <a target="_blank" href="https://github.com/<?php echo $instance['user'] ?>/<?php echo $instance['repo']; ?>" class="wp-github-title">
           <?php echo $instance['title']; ?></h2>
@@ -88,26 +93,26 @@ class WP_GitHub extends WP_Widget {
 
   function update($new_instance, $old_instance) {
     return array(
-        'user'        => strip_tags($new_instance['user'])
+        'title'       => strip_tags($new_instance['title'])
+      , 'user'        => strip_tags($new_instance['user'])
       , 'repo'        => strip_tags($new_instance['repo'])
-      , 'title'       => strip_tags($new_instance['title'])
     );
   }
 
   function form($instance) {
     $instance = wp_parse_args( (array) $instance, array(
-        'user'           => 'RetroFOX'
+        'title'          => 'Sexvim Repository'
+      , 'user'           => 'RetroFOX'
       , 'repo'           => 'sexvim'
-      , 'title'          => 'Sexvim Repository'
     ));
 
+    $instance['title'] = esc_attr($instance['title']);
     $instance['user']  = esc_attr($instance['user']);
     $instance['repo']  = esc_attr($instance['repo']);
-    $instance['title'] = esc_attr($instance['title']);
-   ?>
+  ?>
 
    <p>
-      <label for="<?php echo $this->get_field_id('title'); ?>">Widget Title</label></p>
+      <label for="<?php echo $this->get_field_id('title'); ?>">Title</label></p>
       <input value="<?php echo $instance['title']; ?>" class="widefat" type="text" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>">
     </p>
 
