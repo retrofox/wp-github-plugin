@@ -1,0 +1,3 @@
+[submodule "resources/github"]
+	path = resources/github
+	url = https://github.com/github/media.git
