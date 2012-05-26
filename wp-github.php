@@ -35,6 +35,7 @@ load_plugin_textdomain('widget_wp_github', false, basename( dirname( __FILE__ ) 
  * Github constants
  */
 
+define('gh_host', 'http://www.github.com/');
 define('gh_api_host', 'https://api.github.com/');
 
 /**
@@ -90,7 +91,7 @@ class WP_GitHub extends WP_Widget {
       <ul>
         <?php for ($i = 0; $i < count($data); $i++) : ?>
         <li>
-          <a href="<?php echo $data[$i]['url'] ?>" class="wp-github-user">
+          <a href="<?php echo gh_host.$data[$i]['login'] ?>" target="_blank" class="wp-github-user">
             <img src="<?php echo $data[$i]['avatar_url']; ?>" />
             <span class="user"><?php echo $data[$i]['login']; ?></span>
           </a>
@@ -98,9 +99,9 @@ class WP_GitHub extends WP_Widget {
         <?php endfor; ?> 
       </ul>
       <?php endif; ?>
-    </div>
-    <?php
-    echo $after_widget;
+    <?php echo $after_widget; ?>
+
+  <?php
   }
 
   function update($new_instance, $old_instance) {
