@@ -78,15 +78,14 @@ class WP_GitHub extends WP_Widget {
     $data = getGithubData($instance['user'], $instance['repo']);
     ?>
 
-
-    <div class='widget-container wp-github wp-github-contributors'>
+    <div class="widget-container wp-github wp-github-contributors">
       <h2 class="user">
         <a target="_blank" href="https://github.com/<?php echo $instance['user'] ?>/<?php echo $instance['repo']; ?>" class="wp-github-title">
           <?php echo $instance['title']; ?>
         </a>
       </h2>
-      <?php if ($data['message']) : ?>
-      <p class="message"><?php echo $data['message']; ?></p>
+      <?php if (isset($data['message'])) : ?>
+      <p class="message"><?php _e($data['message'], 'widget_gb_plugin'); ?></p>
       <?php else : ?>
       <ul>
         <?php for ($i = 0; $i < count($data); $i++) : ?>
