@@ -62,7 +62,7 @@ function getGithubData ($user, $repo) {
  * wordpress github class
  */
 
-class WP_GitHub extends WP_Widget {
+class WP_Github_Plugin extends WP_Widget {
 
   function __construct()  {
 
@@ -70,7 +70,7 @@ class WP_GitHub extends WP_Widget {
     wp_enqueue_style('wp-github', gh_plugin_path.'/wp-github.css');
 
     $opciones = array(
-        'classname'     => 'wp-github.css'
+        'classname'     => 'WP_Github_Plugin'
       , 'description'   => 'wordpress-github api'
     );
 
@@ -148,8 +148,7 @@ class WP_GitHub extends WP_Widget {
 }
 
 function widget_wp_github() {
-  register_widget('WP_GitHub');
-  wp_register_script('WP_GitHub', 'pipo.js');
+  register_widget('WP_Github_Plugin');
 }
 
 add_action('widgets_init', 'widget_wp_github');
