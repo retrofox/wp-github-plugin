@@ -1,0 +1,29 @@
+.wp-github-contributors {}
+.wp-github-contributors h2 {
+  font-size: 20px;
+  border: 0px;
+}
+
+.wp-github-contributors ul {}
+.wp-github-contributors ul li {
+  height: 50px;
+}
+
+.wp-github-contributors ul li a {
+  font-size: 16px;
+}
+
+.wp-github-contributors ul li a img {
+  border: 1px solid #eee;
+  padding: 2px;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+}
+
+.wp-github-contributors ul li a span {
+  margin-left: 54px;
+  line-height: 42px;
+}
+
+

@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: WP GitHub
+Plugin Name: WP GitHub Plugin
 Plugin URI: http://www.nodejs.es/wp-github-plugin
 Description: Allow retrieve data from github through API 
 Author: Damian Suarez
@@ -29,7 +29,7 @@ Licence: A "Slug" license name e.g. GPL2
  * Translation support
  */
 
-load_plugin_textdomain('widget_wp_github', false, basename( dirname( __FILE__ ) ) . '/languages' );
+load_plugin_textdomain('wp_github_plugin', false, basename( dirname( __FILE__ ) ) . '/languages' );
 
 /**
  * Github constants
@@ -37,6 +37,7 @@ load_plugin_textdomain('widget_wp_github', false, basename( dirname( __FILE__ ) 
 
 define('gh_host', 'http://www.github.com/');
 define('gh_api_host', 'https://api.github.com/');
+define('gh_plugin_path', $siteurl.'/wp-content/plugins/wp-github-plugin');
 
 /**
  * getGuthubData
@@ -64,6 +65,10 @@ function getGithubData ($user, $repo) {
 class WP_GitHub extends WP_Widget {
 
   function __construct()  {
+
+    // add stylesheet file
+    wp_enqueue_style('wp-github', gh_plugin_path.'/wp-github.css');
+
     $opciones = array(
         'classname'     => 'wp-github.css'
       , 'description'   => 'wordpress-github api'
