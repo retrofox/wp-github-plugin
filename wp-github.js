@@ -48,7 +48,7 @@
                 + '</div>'
               + '</li>';
         }
-        html += '</ul?';
+        html += '</ul>';
 
         return html;
       }
