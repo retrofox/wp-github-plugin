@@ -67,14 +67,17 @@ class WP_Github_Plugin extends WP_Widget {
 
     // add stylesheet file
     wp_enqueue_style('wp-github', gh_plugin_path.'/wp-github.css');
+
+    // add javascript file
     wp_enqueue_script('wp-github', gh_plugin_path.'/wp-github.js', array('jquery'));
 
     // create tmp folder
     $upload_dir = wp_upload_dir();
     $tmp_folder = $upload_dir['basedir'].'/wp-github-plugin';
 
-    if (!file_exists($tmp_folder))
+    if (!file_exists($tmp_folder)) {
       mkdir($tmp_folder, 0777);
+    }
 
     $opciones = array(
         'classname'     => 'WP_Github_Plugin'
@@ -82,7 +85,6 @@ class WP_Github_Plugin extends WP_Widget {
     );
 
     parent::__construct('wp-github-api', 'WP GitHub API', $opciones);
-
   }
 
   function widget($args, $instance) {
@@ -96,7 +98,13 @@ class WP_Github_Plugin extends WP_Widget {
           <?php echo $instance['title']; ?>
         </a>
       </h2>
-    <div class="placeholder"></div>
+      <?php if (isset($instance['desc'])) : ?>
+      <div class="wp-github-description">
+        <?php echo $instance['desc']; ?>
+      </div>
+      <?php endif; ?>
+
+      <div class="placeholder"></div>
     <?php echo $after_widget; ?>
   <?php
   }
@@ -110,6 +118,7 @@ class WP_Github_Plugin extends WP_Widget {
         'title'       => strip_tags($new_instance['title'])
       , 'user'        => strip_tags($new_instance['user'])
       , 'repo'        => strip_tags($new_instance['repo'])
+      , 'desc'        => strip_tags($new_instance['desc'])
     );
   }
 
@@ -118,24 +127,33 @@ class WP_Github_Plugin extends WP_Widget {
         'title'          => 'Sexvim Repository'
       , 'user'           => 'RetroFOX'
       , 'repo'           => 'sexvim'
+      , 'desc'           => 'desc'
     ));
 
     $instance['title'] = esc_attr($instance['title']);
     $instance['user']  = esc_attr($instance['user']);
     $instance['repo']  = esc_attr($instance['repo']);
+    $instance['desc']  = esc_attr($instance['desc']);
   ?>
     <p>
-      <label for="<?php echo $this->get_field_id('title'); ?>">Title</label></p>
+      <label for="<?php echo $this->get_field_id('title'); ?>">Title</label>
       <input value="<?php echo $instance['title']; ?>" class="widefat" type="text" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>">
     </p>
 
     <p>
-      <label for="<?php echo $this->get_field_id('user'); ?>">GitHub user</label></p>
+      <label for="<?php echo $this->get_field_id('desc'); ?>"><?php _e('Description', 'wp_github_plugin'); ?></label>
+      <textarea class="widefat" id="<?php echo $this->get_field_id('desc'); ?>" name="<?php echo $this->get_field_name('desc'); ?>">
+        <?php echo $instance['desc']; ?>
+      </textarea>
+    </p>
+
+    <p>
+      <label for="<?php echo $this->get_field_id('user'); ?>">GitHub user</label>
       <input value="<?php echo $instance['user']; ?>" class="widefat" type="text" id="<?php echo $this->get_field_id('user'); ?>" name="<?php echo $this->get_field_name('user'); ?>">
     </p>
 	
     <p>
-      <label for="<?php echo $this->get_field_id('repo'); ?>">GitHub Repository</label></p>
+      <label for="<?php echo $this->get_field_id('repo'); ?>">GitHub Repository</label>
       <input value="<?php echo $instance['repo']; ?>" class="widefat" type="text" id="<?php echo $this->get_field_id('repo'); ?>" name="<?php echo $this->get_field_name('repo'); ?>">
     </p>
     <?php

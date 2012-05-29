@@ -1,7 +1,11 @@
+/* general styles */
 .wp-github-widget {
   background: white url('images/octocat-tiny.png') no-repeat right top;
 }
 
+.wp-github-widget .wp-github-description {
+  font-size: 12px;
+}
 .wp-github-contributors {}
 .wp-github-contributors h2 {
   font-size: 20px;
