@@ -46,7 +46,7 @@ define('gh_plugin_path', $siteurl.'/wp-content/plugins/wp-github-plugin');
 function cleanCache ($id) {
   $upload_dir = wp_upload_dir();
   $tmp_folder = $upload_dir['basedir'].'/wp-github-plugin';
-  $idf = $tmp_folder.$id;
+  $idf = $tmp_folder.'/'.$id;
 
   if (file_exists($idf.'.txt')) {
     unlink($idf.'.txt');
@@ -111,51 +111,74 @@ class WP_Github_Plugin extends WP_Widget {
 
   function update($new_instance, $old_instance) {
     // delete file when widget is updated
-    $id = '/contributors_'.$old_instance['user'].'_'.$old_instance['repo'];
+    $id = 'gh.'.$old_instance['user'].'.'.$old_instance['repo'].'.contributors';
     cleanCache($id);
 
     return array(
-        'title'       => strip_tags($new_instance['title'])
-      , 'user'        => strip_tags($new_instance['user'])
-      , 'repo'        => strip_tags($new_instance['repo'])
-      , 'desc'        => strip_tags($new_instance['desc'])
+        'title'                       => strip_tags($new_instance['title'])
+      , 'user'                        => strip_tags($new_instance['user'])
+      , 'repo'                        => strip_tags($new_instance['repo'])
+      , 'desc'                        => strip_tags($new_instance['desc'])
+
+      , 'repo-add-description'        => strip_tags($new_instance['repo-add-description'])
     );
   }
 
   function form($instance) {
     $instance = wp_parse_args( (array) $instance, array(
-        'title'          => 'Sexvim Repository'
-      , 'user'           => 'RetroFOX'
-      , 'repo'           => 'sexvim'
-      , 'desc'           => 'desc'
+        'title'                   => 'Sexvim Repository'
+      , 'user'                    => 'RetroFOX'
+      , 'repo'                    => 'sexvim'
+      , 'desc'                    => 'desc'
+
+      , 'repo-add-description'    => 'on'
     ));
 
     $instance['title'] = esc_attr($instance['title']);
     $instance['user']  = esc_attr($instance['user']);
     $instance['repo']  = esc_attr($instance['repo']);
     $instance['desc']  = esc_attr($instance['desc']);
-  ?>
+
+    // repository description fields
+    $instance['repo-add-description']  = esc_attr($instance['repo-add-description']);
+
+    echo '<pre>';
+    print_r($instance);
+    echo '</pre>';
+?>
+
     <p>
-      <label for="<?php echo $this->get_field_id('title'); ?>">Title</label>
+      <strong for="<?php echo $this->get_field_id('title'); ?>">Title</strong>
       <input value="<?php echo $instance['title']; ?>" class="widefat" type="text" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>">
     </p>
 
     <p>
-      <label for="<?php echo $this->get_field_id('desc'); ?>"><?php _e('Description', 'wp_github_plugin'); ?></label>
-      <textarea class="widefat" id="<?php echo $this->get_field_id('desc'); ?>" name="<?php echo $this->get_field_name('desc'); ?>">
-        <?php echo $instance['desc']; ?>
-      </textarea>
+      <strong for="<?php echo $this->get_field_id('desc'); ?>"><?php _e('Description', 'wp_github_plugin'); ?></strong>
+      <textarea class="widefat" id="<?php echo $this->get_field_id('desc'); ?>" name="<?php echo $this->get_field_name('desc'); ?>"><?php echo $instance['desc']; ?></textarea>
     </p>
+    <br />
 
     <p>
-      <label for="<?php echo $this->get_field_id('user'); ?>">GitHub user</label>
+      <strong for="<?php echo $this->get_field_id('user'); ?>">GitHub user</strong>
       <input value="<?php echo $instance['user']; ?>" class="widefat" type="text" id="<?php echo $this->get_field_id('user'); ?>" name="<?php echo $this->get_field_name('user'); ?>">
     </p>
 	
     <p>
-      <label for="<?php echo $this->get_field_id('repo'); ?>">GitHub Repository</label>
+      <strong for="<?php echo $this->get_field_id('repo'); ?>">GitHub Repository</strong>
       <input value="<?php echo $instance['repo']; ?>" class="widefat" type="text" id="<?php echo $this->get_field_id('repo'); ?>" name="<?php echo $this->get_field_name('repo'); ?>">
     </p>
+    <br />
+
+    <p>
+      <strong><?php _e('Repository', 'wp_github_plugin'); ?></strong>
+      <br />
+      <label>
+        <input <?php echo $instance['repo-add-description'] == "on" ? 'checked="checked"' : ''; ?>" class="ckeckbox" type="checkbox" id="<?php echo $this->get_field_id('repo-add-description'); ?>" name="<?php echo $this->get_field_name('repo-add-description'); ?>">
+        <span><?php _e('Add description', 'wp_github_plugin'); ?></span>
+      </label>
+    </p>
+
+    <br />
     <?php
   }
 }

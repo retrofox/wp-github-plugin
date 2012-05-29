@@ -66,32 +66,71 @@ function getGithubData ($url, $id) {
   return $response;
 }
 
+function loadLocalETag ($filename) {
+  $handler = fopen($filename, "r");
+  $eTag = fread($handler, filesize($filename));
+  fclose($handler);
+
+  return $eTag;
+}
+
+function saveLocalETag ($id, $etag) {
+  // save eTag local file
+  $etagFile = wp_tmp_folder.$id.'-etag.txt';
+  $fh = fopen($etagFile, 'w');
+  fwrite($fh, $etag);
+  fclose($fh);
+}
+
+function loadLocalFile ($id) {
+  $localFile = wp_tmp_folder.$id.'.txt';
+  $handler = fopen($localFile, "r");
+  $local = fread($handler, filesize($localFile));
+  fclose($handler);
+
+  return $local;
+}
+
+function saveLocalFile ($id, $data) {
+  // save local file
+  $localFile = wp_tmp_folder.$id.'.txt';
+  $fh = fopen($localFile, 'w');
+  fwrite($fh, $data);
+  fclose($fh);
+}
+
+function updateData ($id, $ghETag) {
+  $etagFilename = $id.'-etag.txt';
+  $localETagFile = wp_tmp_folder.$etagFilename;
+
+  if (file_exists($localETagFile)) {
+    $eTag = loadLocalETag($localETagFile);
+
+    if ($eTag == $ghETag) {
+      return false;
+    } else {
+      saveLocalETag($id, $ghETag);
+      return true;
+    }
+  } else {
+    saveLocalETag($id, $ghETag);
+    return true;
+  }
+
+}
+
 /**
  * getContributors function
  */
 
 function getContributors ($user, $repo) {
   $url = gh_api_host."repos/".$user."/".$repo."/contributors";
-  $id = 'contributors_'.$user.'_'.$repo;
+  $id = 'gh.'.$user.'.'.$repo.'.contributors';
 
-  // load local file
-  function getLocal ($id) {
-    $localFile = wp_tmp_folder.$id.'.txt';
-    $handler = fopen($localFile, "r");
-    $local = fread($handler, filesize($localFile));
-    fclose($handler);
+  $githubETag = getGithubEtag($url, true);
 
-    return $local;
-  }
-
-  // get remote resources
-  function getRemote ($url, $id, $etag) {
-    // save eTag local file
-    $etagFile = wp_tmp_folder.$id.'-etag.txt';
-    $fh = fopen($etagFile, 'w');
-    fwrite($fh, $etag);
-    fclose($fh);
-
+  // eTAG control
+  if (updateData($id, $githubETag)) {
     // get remote data from github
     $data = getGithubData($url, $id);
 
@@ -108,35 +147,13 @@ function getContributors ($user, $repo) {
     };
 
     $response = json_encode($response);
-
-    // save local file
-    $localFile = wp_tmp_folder.$id.'.txt';
-    $fh = fopen($localFile, 'w');
-    fwrite($fh, $response);
-    fclose($fh);
+    saveLocalFile($id, $response);
 
     return $response;
-  }
 
-  // eTAG control
-  $githubETag = getGithubEtag($url, true);
-  $etagFilename = $id.'-etag.txt';
-  $localETagFile = wp_tmp_folder.$etagFilename;
-
-  if (file_exists($localETagFile)) {
-    $handler = fopen($localETagFile, "r");
-    $eTag = fread($handler, filesize($localETagFile));
-    fclose($handler);
-
-    if ($eTag == $githubETag) {
-      return getLocal($id);
-    } else {
-      return getRemote($url, $id, $githubETag);
-    }
   } else {
-    return getRemote($url, $id, $githubETag);
+    return loadLocalFile($id);
   }
-
 }
 
 /**
