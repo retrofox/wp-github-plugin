@@ -23,9 +23,6 @@
             url: gh_plugin_root + "wp-github-ajax.php"
           , data: params
           , success: fn
-          , error: function (obj, type, desc) {
-              console.log(desc);
-            }
         });
       }
 

@@ -141,10 +141,6 @@ class WP_Github_Plugin extends WP_Widget {
 
     // repository description fields
     $instance['repo-add-description']  = esc_attr($instance['repo-add-description']);
-
-    echo '<pre>';
-    print_r($instance);
-    echo '</pre>';
 ?>
 
     <p>
