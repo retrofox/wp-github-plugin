@@ -51,6 +51,12 @@ class WP_Github_Plugin extends WP_Widget {
     wp_enqueue_style('wp-github', gh_plugin_path.'/wp-github.css');
     wp_enqueue_script('wp-github', gh_plugin_path.'/wp-github.js', array('jquery'));
 
+    // create tmp folder
+    $upload_dir = wp_upload_dir();
+    $tmp_folder = $upload_dir['basedir'].'/wp-github-plugin';
+
+    mkdir($tmp_folder, 0777);
+
     $opciones = array(
         'classname'     => 'WP_Github_Plugin'
       , 'description'   => 'wordpress-github api'
