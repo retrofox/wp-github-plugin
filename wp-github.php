@@ -40,6 +40,24 @@ define('gh_api_host', 'https://api.github.com/');
 define('gh_plugin_path', $siteurl.'/wp-content/plugins/wp-github-plugin');
 
 /**
+ * clean cache
+ */
+
+function cleanCache ($id) {
+  $upload_dir = wp_upload_dir();
+  $tmp_folder = $upload_dir['basedir'].'/wp-github-plugin';
+  $idf = $tmp_folder.$id;
+
+  if (file_exists($idf.'.txt')) {
+    unlink($idf.'.txt');
+  }
+
+  if (file_exists($idf.'-etag.txt')) {
+    unlink($idf.'-etag.txt');
+  }
+}
+
+/**
  * wordpress github class
  */
 
@@ -70,39 +88,24 @@ class WP_Github_Plugin extends WP_Widget {
   function widget($args, $instance) {
     extract($args);
     extract($instance);
+  ?>
 
-    ?>
-
-    <div id="wp-github-widget" class="widget-container wp-github wp-github-contributors" data-user="<?php echo $instance['user']; ?>" data-repo="<?php echo $instance['repo']; ?>" data-type="contributors">
+    <div class="widget-container wp-github-widget wp-github-contributors" data-user="<?php echo $instance['user']; ?>" data-repo="<?php echo $instance['repo']; ?>" data-type="contributors">
       <h2 class="user">
         <a target="_blank" href="https://github.com/<?php echo $instance['user'] ?>/<?php echo $instance['repo']; ?>" class="wp-github-title">
           <?php echo $instance['title']; ?>
         </a>
       </h2>
     <div class="placeholder"></div>
-    <?php /*
-      <?php if (isset($data['message'])) : ?>
-      <p class="message"><?php _e($data['message'], 'wp_github_plugin'); ?></p>
-      <?php else : ?>
-      <ul>
-        <?php for ($i = 0; $i < count($data); $i++) : ?>
-        <li>
-          <a href="<?php echo gh_host.$data[$i]['login'] ?>" target="_blank" class="wp-github-user">
-            <img src="<?php echo $data[$i]['avatar_url']; ?>" />
-            <span class="user"><?php echo $data[$i]['login']; ?></span>
-          </a>
-        </li>
-        <?php endfor; ?> 
-      </ul>
-      <?php endif; ?>
-     */ ?>
-
     <?php echo $after_widget; ?>
-
   <?php
   }
 
   function update($new_instance, $old_instance) {
+    // delete file when widget is updated
+    $id = '/contributors_'.$old_instance['user'].'_'.$old_instance['repo'];
+    cleanCache($id);
+
     return array(
         'title'       => strip_tags($new_instance['title'])
       , 'user'        => strip_tags($new_instance['user'])
@@ -121,8 +124,7 @@ class WP_Github_Plugin extends WP_Widget {
     $instance['user']  = esc_attr($instance['user']);
     $instance['repo']  = esc_attr($instance['repo']);
   ?>
-
-   <p>
+    <p>
       <label for="<?php echo $this->get_field_id('title'); ?>">Title</label></p>
       <input value="<?php echo $instance['title']; ?>" class="widefat" type="text" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>">
     </p>
