@@ -40,25 +40,6 @@ define('gh_api_host', 'https://api.github.com/');
 define('gh_plugin_path', $siteurl.'/wp-content/plugins/wp-github-plugin');
 
 /**
- * getGuthubData
- * retrieve data through github API
- */
-
-function getGithubData ($user, $repo) {
-  $url = gh_api_host."repos/".$user."/".$repo."/contributors";
-
-  $ch = curl_init($url);
-
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-  $response = curl_exec($ch);
-
-  $contributors = json_decode($response, true);
-  curl_close($ch);
-
-  return $contributors;
-}
-
-/**
  * wordpress github class
  */
 
@@ -68,6 +49,7 @@ class WP_Github_Plugin extends WP_Widget {
 
     // add stylesheet file
     wp_enqueue_style('wp-github', gh_plugin_path.'/wp-github.css');
+    wp_enqueue_script('wp-github', gh_plugin_path.'/wp-github.js', array('jquery'));
 
     $opciones = array(
         'classname'     => 'WP_Github_Plugin'
@@ -75,23 +57,25 @@ class WP_Github_Plugin extends WP_Widget {
     );
 
     parent::__construct('wp-github-api', 'WP GitHub API', $opciones);
+
   }
 
   function widget($args, $instance) {
     extract($args);
     extract($instance);
 
-    $data = getGithubData($instance['user'], $instance['repo']);
     ?>
 
-    <div class="widget-container wp-github wp-github-contributors">
+    <div id="wp-github-widget" class="widget-container wp-github wp-github-contributors" data-user="<?php echo $instance['user']; ?>" data-repo="<?php echo $instance['repo']; ?>" data-type="contributors">
       <h2 class="user">
         <a target="_blank" href="https://github.com/<?php echo $instance['user'] ?>/<?php echo $instance['repo']; ?>" class="wp-github-title">
           <?php echo $instance['title']; ?>
         </a>
       </h2>
+    <div class="placeholder"></div>
+    <?php /*
       <?php if (isset($data['message'])) : ?>
-      <p class="message"><?php _e($data['message'], 'widget_gb_plugin'); ?></p>
+      <p class="message"><?php _e($data['message'], 'wp_github_plugin'); ?></p>
       <?php else : ?>
       <ul>
         <?php for ($i = 0; $i < count($data); $i++) : ?>
@@ -104,6 +88,8 @@ class WP_Github_Plugin extends WP_Widget {
         <?php endfor; ?> 
       </ul>
       <?php endif; ?>
+     */ ?>
+
     <?php echo $after_widget; ?>
 
   <?php

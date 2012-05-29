@@ -6,7 +6,13 @@
 
 .wp-github-contributors ul {}
 .wp-github-contributors ul li {
-  height: 50px;
+  height: 60px;
+  border-top: 1px dotted #aaa;
+}
+
+
+.wp-github-contributors ul li.last {
+  border-bottom: 1px dotted #aaa;
 }
 
 .wp-github-contributors ul li a {
@@ -21,9 +27,19 @@
   position: absolute;
 }
 
-.wp-github-contributors ul li a span {
+.wp-github-contributors ul li .profile {
   margin-left: 54px;
   line-height: 42px;
 }
 
 
+.wp-github-contributors ul li .profile .user {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.wp-github-contributors ul li .profile div {
+  height: 20px;
+  line-height: 20px;
+  font-size: 11px;
+}
