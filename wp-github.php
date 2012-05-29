@@ -55,7 +55,8 @@ class WP_Github_Plugin extends WP_Widget {
     $upload_dir = wp_upload_dir();
     $tmp_folder = $upload_dir['basedir'].'/wp-github-plugin';
 
-    mkdir($tmp_folder, 0777);
+    if (!file_exists($tmp_folder))
+      mkdir($tmp_folder, 0777);
 
     $opciones = array(
         'classname'     => 'WP_Github_Plugin'
