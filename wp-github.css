@@ -6,8 +6,9 @@
 
 .wp-github-contributors ul {}
 .wp-github-contributors ul li {
-  height: 60px;
+  height: 50px;
   border-top: 1px dotted #aaa;
+  padding-top: 3px;
 }
 
 
@@ -39,7 +40,7 @@
 }
 
 .wp-github-contributors ul li .profile div {
-  height: 20px;
-  line-height: 20px;
+  height: 16px;
+  line-height: 16px;
   font-size: 11px;
 }
