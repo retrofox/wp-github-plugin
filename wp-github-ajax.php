@@ -56,7 +56,7 @@ function getGithubETag ($url) {
  * retieve data from github
  */
 
-function getGithubData ($url, $id) {
+function getGithubData ($url) {
   // retrieve data form Github
   $ch = curl_init($url);
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -132,7 +132,7 @@ function getContributors ($user, $repo) {
   // eTAG control
   if (updateData($id, $githubETag)) {
     // get remote data from github
-    $data = getGithubData($url, $id);
+    $data = getGithubData($url);
 
     // process contributors data
     $contributors = json_decode($data);
