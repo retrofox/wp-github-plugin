@@ -139,7 +139,7 @@ function getContributors ($user, $repo) {
     $response = array();
 
     foreach ($contributors as $k => $user) {
-      $fullUser = getGithubData($user->url);
+      $fullUser = isset($user->url) ? getGithubData($user->url) : array();
       array_push($response, array(
           'user' => $user
         , 'full' => json_decode($fullUser)
