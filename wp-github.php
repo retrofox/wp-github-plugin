@@ -104,6 +104,7 @@ class WP_Github_Plugin extends WP_Widget {
       </div>
       <?php endif; ?>
 
+      <h3 class="wp-widget-section-title">Contributors</h3>
       <div class="placeholder"></div>
     <?php echo $after_widget; ?>
   <?php

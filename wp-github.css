@@ -5,12 +5,22 @@
 
 .wp-github-widget .wp-github-description {
   font-size: 12px;
+  margin: 0 0 5px;
 }
-.wp-github-contributors {}
-.wp-github-contributors h2 {
+
+.wp-github-widget h2 {
   font-size: 20px;
   border: 0px;
 }
+
+.wp-github-widget h3 {
+  font-size: 16px;
+  border: 0px;
+  margin: 5px 0 3px;
+  color: #888;
+}
+
+/* contributors */
 
 .wp-github-contributors ul {}
 .wp-github-contributors ul li {
