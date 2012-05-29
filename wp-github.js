@@ -53,12 +53,8 @@
     }
 
     getData(params, function (data) {
-      console.log(data);
       ph.html(markUp(data));
     });
-
-
-
 
   });
 })(jQuery);
