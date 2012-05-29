@@ -42,14 +42,18 @@
                 + '</a>'
 
                 + '<div class="profile">'
-                  + '<div class="user">' + user.login + '</div>'
+                  + '<div class="user">'
+                    + '<a href="' + full.html_url + '" target="_blank">'
+                      + user.login
+                    + '</a>'
+                  + '</div>'
                   + (full.email ? ('<div class="contact">' + full.email + '</div>') : '')
                   + (full.blog ? ('<div class="blog">' + full.blog + '</div>') : '')
                 + '</div>'
               + '</li>';
         }
-        html += '</ul>';
 
+        html += '</ul>';
         return html;
       }
 
