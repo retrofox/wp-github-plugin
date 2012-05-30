@@ -92,7 +92,7 @@
 
         var html = '<ul>'
                 + '<li>'
-                  + '<h2><a href="' + repo.href_url + '" title="' + repo.full_name + '" target="_blank">'
+                  + '<h2><a href="' + repo.html_url + '" title="' + repo.full_name + '" target="_blank">'
                     + repo.name
                   + '</a></h2>'
                   + '<p>' + repo.description + '</p>'
@@ -101,7 +101,6 @@
 
         return html;
       }
-
 
       /**
        * process all widget sections
