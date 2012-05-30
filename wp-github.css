@@ -29,7 +29,8 @@
 }
 
 /* repository */
-.wp-github-widget .repository-placeholder p {
+.wp-github-widget .repository-placeholder h2 {
+  margin: 0;
 }
 
 /* contributors */
