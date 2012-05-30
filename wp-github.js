@@ -63,7 +63,6 @@
        */
 
       markUp.issues  = function (data) {
-        console.log("-> data -> ", data);
         var html = '<ul>';
 
         for (var i = 0; i < data.issues.length; i++) {
