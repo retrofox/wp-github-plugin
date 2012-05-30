@@ -105,7 +105,11 @@ class WP_Github_Plugin extends WP_Widget {
       <?php endif; ?>
 
       <h3 class="wp-widget-section-title">Contributors</h3>
-      <div class="placeholder"></div>
+      <div class="contributors-placeholder"></div>
+
+      <h3 class="wp-widget-section-title">Issues</h3>
+      <div class="issues-placeholder"></div>
+
     <?php echo $after_widget; ?>
   <?php
   }
@@ -113,6 +117,9 @@ class WP_Github_Plugin extends WP_Widget {
   function update($new_instance, $old_instance) {
     // delete file when widget is updated
     $id = 'gh.'.$old_instance['user'].'.'.$old_instance['repo'].'.contributors';
+    cleanCache($id);
+
+    $id = 'gh.'.$old_instance['user'].'.'.$old_instance['repo'].'.issues';
     cleanCache($id);
 
     return array(

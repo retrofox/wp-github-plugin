@@ -136,23 +136,55 @@ function getContributors ($user, $repo) {
 
     // process contributors data
     $contributors = json_decode($data);
-    $response = array();
+    $fullContributors = array (
+        'type' => 'contributors'
+      , 'etag' => $githubETag
+      , 'users' => array()
+    );
 
     foreach ($contributors as $k => $user) {
       $fullUser = isset($user->url) ? getGithubData($user->url) : array();
-      array_push($response, array(
+      array_push($fullContributors['users'], array(
           'user' => $user
         , 'full' => json_decode($fullUser)
       ));
     };
 
-    $response = json_encode($response);
-    saveLocalFile($id, $response);
-
-    return $response;
-
+    saveLocalFile($id, json_encode($fullContributors));
+    return $fullContributors;
   } else {
-    return loadLocalFile($id);
+    return json_decode(loadLocalFile($id));
+  }
+}
+
+
+/**
+ * get Issues
+ */
+
+function getIssues ($user, $repo) {
+  $url = gh_api_host."repos/".$user."/".$repo."/issues";
+  $id = 'gh.'.$user.'.'.$repo.'.issues';
+
+  $githubETag = getGithubEtag($url, true);
+
+  // eTAG control
+  if (updateData($id, $githubETag)) {
+    // get remote data from github
+    $data = getGithubData($url);
+
+    // process issues data
+    $issues = json_decode($data);
+    $fullIssues = array (
+        'type' => 'issues'
+      , 'etag' => $githubETag
+      , 'issues' => $issues 
+    );
+
+    saveLocalFile($id, json_encode($fullIssues));
+    return $fullIssues;
+  } else {
+    return json_decode(loadLocalFile($id));
   }
 }
 
@@ -162,12 +194,15 @@ function getContributors ($user, $repo) {
  */
 
 function getData ($type, $params) {
+  $response = array();
 
-  switch ($type) {
-    case "contributors":
-      return getContributors($params['user'], $params['repo']);
-    break;
-  }
+  // contributors
+  $response['contributors'] = getContributors($params['user'], $params['repo']);
+
+  // issues
+  $response['issues'] = getIssues($params['user'], $params['repo']);
+
+  return json_encode($response);
 }
 
 $type = $_GET["type"];
