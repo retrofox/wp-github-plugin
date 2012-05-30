@@ -40,6 +40,17 @@ define('gh_api_host', 'https://api.github.com/');
 define('gh_plugin_path', $siteurl.'/wp-content/plugins/wp-github-plugin');
 
 /**
+ * sections plugin
+ */
+function getSections () {
+  return array (
+      'repository' => 'Repository'
+    , 'contributors' => 'Contributors'
+    , 'issues' => 'Issues'
+  );
+}
+
+/**
  * clean cache
  */
 
@@ -92,30 +103,20 @@ class WP_Github_Plugin extends WP_Widget {
     extract($instance);
   ?>
 
-    <div class="widget-container wp-github-widget" data-user="<?php echo $instance['user']; ?>" data-repo="<?php echo $instance['repo']; ?>" data-type="contributors">
-      <h2 class="user">
-        <a target="_blank" href="https://github.com/<?php echo $instance['user'] ?>/<?php echo $instance['repo']; ?>" class="wp-github-title">
-          <?php echo $instance['title']; ?>
-        </a>
-      </h2>
-      <?php if (isset($instance['desc'])) : ?>
-      <div class="wp-github-description">
-        <?php echo $instance['desc']; ?>
-      </div>
-      <?php endif; ?>
-
-      <h3 class="wp-widget-section-title">Contributors</h3>
-      <div class="contributors-placeholder"></div>
-
-      <h3 class="wp-widget-section-title">Issues</h3>
-      <div class="issues-placeholder"></div>
+    <div class="widget-container wp-github-widget" data-user="<?php echo $instance['user']; ?>" data-repo="<?php echo $instance['repo']; ?>">
+      <?php foreach(getSections() as $k => $section) : ?>
+        <h3 class="wp-widget-section-title"><?echo $section ?></h3>
+        <div class="<?php echo $k; ?>-placeholder"></div>
+      <?php endforeach; ?>
 
     <?php echo $after_widget; ?>
   <?php
   }
 
   function update($new_instance, $old_instance) {
-    // delete file when widget is updated
+    $id = 'gh.'.$old_instance['user'].'.'.$old_instance['repo'].'.repository';
+    cleanCache($id);
+
     $id = 'gh.'.$old_instance['user'].'.'.$old_instance['repo'].'.contributors';
     cleanCache($id);
 

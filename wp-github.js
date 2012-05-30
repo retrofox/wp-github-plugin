@@ -12,7 +12,6 @@
       var params = {
               user: widget.data('user')
             , repo: widget.data('repo')
-            , type: widget.data('type')
           }
 
       function getData (params, fn) {
@@ -83,6 +82,30 @@
         html += '</ul>';
         return html;
       }
+
+      /**
+       * Repository Markup
+       */
+
+      markUp.repository  = function (data) {
+        var repo = data.repository;
+
+        var html = '<ul>'
+                + '<li>'
+                  + '<h2><a href="' + repo.href_url + '" title="' + repo.full_name + '" target="_blank">'
+                    + repo.name
+                  + '</a></h2>'
+                  + '<p>' + repo.description + '</p>'
+                + '</li>'
+              + '</ul>';
+
+        return html;
+      }
+
+
+      /**
+       * process all widget sections
+       */
 
       getData(params, function (data) {
         for (var k in data) {

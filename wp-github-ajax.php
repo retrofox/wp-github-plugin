@@ -116,8 +116,39 @@ function updateData ($id, $ghETag) {
     saveLocalETag($id, $ghETag);
     return true;
   }
-
 }
+
+
+/**
+ * get Repository
+ */
+
+function getRepository ($user, $repo) {
+  $url = gh_api_host."repos/".$user."/".$repo;
+  $id = 'gh.'.$user.'.'.$repo.'.repository';
+
+  $githubETag = getGithubEtag($url, true);
+
+  // eTAG control
+  if (updateData($id, $githubETag)) {
+    // get remote data from github
+    $data = getGithubData($url);
+
+    // process repository data
+    $repo = json_decode($data);
+    $fullRepo = array (
+        'type' => 'repository'
+      , 'etag' => $githubETag
+      , 'repository' => $repo 
+    );
+
+    saveLocalFile($id, json_encode($fullRepo));
+    return $fullRepo;
+  } else {
+    return json_decode(loadLocalFile($id));
+  }
+}
+
 
 /**
  * getContributors function
@@ -157,7 +188,6 @@ function getContributors ($user, $repo) {
   }
 }
 
-
 /**
  * get Issues
  */
@@ -193,8 +223,11 @@ function getIssues ($user, $repo) {
  * retrieve data through github API
  */
 
-function getData ($type, $params) {
+function getData ($params) {
   $response = array();
+
+  // repository
+  $response['repository'] = getRepository($params['user'], $params['repo']);
 
   // contributors
   $response['contributors'] = getContributors($params['user'], $params['repo']);
@@ -205,11 +238,11 @@ function getData ($type, $params) {
   return json_encode($response);
 }
 
-$type = $_GET["type"];
-
 $params = array (
     'user' => $_GET["user"]
   , 'repo' => $_GET["repo"]
 );
 
-echo getData($type, $params);
+echo getData($params);
+
+
