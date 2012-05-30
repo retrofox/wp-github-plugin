@@ -33,11 +33,11 @@
   height: 50px;
 }
 
-.wp-github-contributors ul li a {
+.wp-github-widget .contributors-placeholder ul li a {
   font-size: 16px;
 }
 
-.wp-github-contributors ul li a img {
+.wp-github-widget .contributors-placeholder ul li a img {
   border: 1px solid #eee;
   padding: 2px;
   width: 40px;
@@ -45,17 +45,17 @@
   position: absolute;
 }
 
-.wp-github-contributors ul li .profile {
+.wp-github-widget .contributors-placeholder ul li .profile {
   margin-left: 54px;
   line-height: 42px;
 }
 
-.wp-github-contributors ul li .profile .user {
+.wp-github-widget .contributors-placeholder ul li .profile .user {
   font-size: 12px;
   font-weight: bold;
 }
 
-.wp-github-contributors ul li .profile div {
+.wp-github-widget .contributors-placeholder ul li .profile div {
   height: 16px;
   line-height: 16px;
   font-size: 11px;
@@ -68,7 +68,6 @@
 .wp-github-widget .issues-placeholder ul li {
   font-size: 12px;
 }
-
 
 .wp-github-widget .issues-placeholder ul li span.issue-number {
   margin-right: 5px;

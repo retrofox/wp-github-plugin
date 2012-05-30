@@ -92,7 +92,7 @@ class WP_Github_Plugin extends WP_Widget {
     extract($instance);
   ?>
 
-    <div class="widget-container wp-github-widget wp-github-contributors" data-user="<?php echo $instance['user']; ?>" data-repo="<?php echo $instance['repo']; ?>" data-type="contributors">
+    <div class="widget-container wp-github-widget" data-user="<?php echo $instance['user']; ?>" data-repo="<?php echo $instance['repo']; ?>" data-type="contributors">
       <h2 class="user">
         <a target="_blank" href="https://github.com/<?php echo $instance['user'] ?>/<?php echo $instance['repo']; ?>" class="wp-github-title">
           <?php echo $instance['title']; ?>
