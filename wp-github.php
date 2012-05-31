@@ -101,9 +101,11 @@ class WP_Github_Plugin extends WP_Widget {
   function widget($args, $instance) {
     extract($args);
     extract($instance);
+
+    $plugin_path = get_bloginfo('url').'/wp-content/plugins/wp-github-plugin';
   ?>
 
-    <div class="widget-container wp-github-widget" data-user="<?php echo $instance['user']; ?>" data-repo="<?php echo $instance['repo']; ?>">
+    <div class="widget-container wp-github-widget" data-user="<?php echo $instance['user']; ?>" data-repo="<?php echo $instance['repo']; ?>" data-plugin-path="<?php echo $plugin_path; ?>">
       <?php foreach(getSections() as $k => $section) : ?>
         <h3 class="wp-widget-section-title"><?echo $section ?></h3>
         <div class="<?php echo $k; ?>-placeholder"></div>
