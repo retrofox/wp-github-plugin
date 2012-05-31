@@ -1,6 +1,5 @@
 (function($) {
   $(window).ready(function() {
-    var gh_plugin_root = 'wp-content/plugins/wp-github-plugin/';
     /**
      * process widget function
      */
@@ -16,7 +15,7 @@
 
       function getData (params, fn) {
         $.ajax({
-            url: gh_plugin_root + "/wp-github-ajax.php"
+            url: plugin_path + "/wp-github-ajax.php"
           , data: params
           , success: fn
         });
