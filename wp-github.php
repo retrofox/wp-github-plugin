@@ -44,7 +44,6 @@ function getSections () {
   return array (
       'repository' => 'Repository'
     , 'contributors' => 'Contributors'
-    , 'issues' => 'Issues'
   );
 }
 
