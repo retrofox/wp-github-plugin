@@ -31,13 +31,11 @@ Licence: A "Slug" license name e.g. GPL2
 
 load_plugin_textdomain('wp_github_plugin', false, basename( dirname( __FILE__ ) ) . '/languages' );
 
-/**
- * Github constants
- */
+include('core/constants.php');
+include('core/api.php');
 
-define('gh_host', 'http://www.github.com/');
-define('gh_api_host', 'https://api.github.com/');
-define('gh_plugin_path', $siteurl.'/wp-content/plugins/wp-github-plugin');
+$upload_dir = wp_upload_dir();
+define('wp_tmp_folder', $upload_dir['basedir'].'/wp-github-plugin/');
 
 /**
  * sections plugin
@@ -55,8 +53,6 @@ function getSections () {
  */
 
 function cleanCache ($id) {
-  $upload_dir = wp_upload_dir();
-  $tmp_folder = $upload_dir['basedir'].'/wp-github-plugin';
   $idf = $tmp_folder.'/'.$id;
 
   if (file_exists($idf.'.txt')) {
@@ -195,4 +191,24 @@ function widget_wp_github() {
 }
 
 add_action('widgets_init', 'widget_wp_github');
+
+/**
+ *  shortcodes support
+ */
+
+function github_func( $atts ) {
+  extract( shortcode_atts( array(
+        'user' => 'retrofox'
+      , 'repo' => 'wp-github-plugin'
+      , 'type' => 'details'
+      , 'number' => null 
+      , 'add_issues' => 'false'
+    ), $atts)
+  );
+
+  $data = getGHData($atts);
+  include('templates/'.$type.'.php');
+}
+
+add_shortcode( 'github', 'github_func' );
 ?>
