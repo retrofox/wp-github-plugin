@@ -281,7 +281,7 @@ function getData ($params) {
   $response['contributors'] = getContributors($params['user'], $params['repo']);
 
   // issues
-  $response['issues'] = getIssues($params['user'], $params['repo']);
+  $response['issues'] = getIssues($params['user'], $params['repo'], array());
 
   return json_encode($response);
 }

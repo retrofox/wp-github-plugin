@@ -1,5 +1,6 @@
 (function($) {
   $(window).ready(function() {
+
     /**
      * process widget function
      */
@@ -117,6 +118,7 @@
 
     // widget DOM element
     var widgets = $('.wp-github-widget');
+
     if (!widgets.length) return;
 
     $.each(widgets, function(i, widget) {
